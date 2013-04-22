@@ -7,6 +7,15 @@ package com.app.taxi.po;
  */
 public class Coordinate {
 	
+	
+	public Coordinate() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Coordinate(double lan, double lon) {
+		this.lon = lon;
+		this.lan = lan;
+	}
 	/**
 	 * 经度
 	 */

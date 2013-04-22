@@ -1,93 +1,76 @@
 package com.app.taxi.po;
 
-import java.util.Date;
 
-public class Order extends BaseBean
-{
-  private Date date;
-  private String startAddress;
-  private String endAddress;
-  private Coordinate coordinate;
-  private Guest guest;
-  private Driver driver;
-  private OrderState state;
-  private double distance;
+public class Order extends BaseBean {
+	
+	private String startAddress;
+	private String endAddress;
+	private Coordinate coordinate;
+	private Guest guest;
+	private Driver driver;
+	private OrderState state;
+	private double distance;
 
-  public Date getDate()
-  {
-    return this.date;
-  }
+	public String getStartAddress() {
+		return this.startAddress;
+	}
 
-  public void setDate(Date date)
-  {
-    this.date = date;
-  }
+	public void setStartAddress(String startAddress) {
+		this.startAddress = startAddress;
+	}
 
-  public String getStartAddress() {
-    return this.startAddress;
-  }
+	public String getEndAddress() {
+		return this.endAddress;
+	}
 
-  public void setStartAddress(String startAddress) {
-    this.startAddress = startAddress;
-  }
+	public void setEndAddress(String endAddress) {
+		this.endAddress = endAddress;
+	}
 
-  public String getEndAddress() {
-    return this.endAddress;
-  }
+	public Coordinate getCoordinate() {
+		return this.coordinate;
+	}
 
-  public void setEndAddress(String endAddress) {
-    this.endAddress = endAddress;
-  }
+	public void setCoordinate(Coordinate coordinate) {
+		this.coordinate = coordinate;
+	}
 
-  public Coordinate getCoordinate() {
-    return this.coordinate;
-  }
+	public Guest getGuest() {
+		return this.guest;
+	}
 
-  public void setCoordinate(Coordinate coordinate) {
-    this.coordinate = coordinate;
-  }
+	public void setGuest(Guest guest) {
+		this.guest = guest;
+	}
 
-  public Guest getGuest()
-  {
-    return this.guest;
-  }
+	public OrderState getState() {
+		return this.state;
+	}
 
-  public void setGuest(Guest guest)
-  {
-    this.guest = guest;
-  }
+	public void setState(OrderState state) {
+		this.state = state;
+	}
 
-  public OrderState getState()
-  {
-    return this.state;
-  }
+	public Driver getDriver() {
+		return this.driver;
+	}
 
-  public void setState(OrderState state)
-  {
-    this.state = state;
-  }
+	public void setDriver(Driver driver) {
+		this.driver = driver;
+	}
 
-  public Driver getDriver()
-  {
-    return this.driver;
-  }
+	/**
+	 * @return the distance
+	 */
+	public double getDistance() {
+		return distance;
+	}
 
-  public void setDriver(Driver driver)
-  {
-    this.driver = driver;
-  }
-
-/**
- * @return the distance
- */
-public double getDistance() {
-	return distance;
-}
-
-/**
- * @param distance the distance to set
- */
-public void setDistance(double distance) {
-	this.distance = distance;
-}
+	/**
+	 * @param distance
+	 *            the distance to set
+	 */
+	public void setDistance(double distance) {
+		this.distance = distance;
+	}
 }

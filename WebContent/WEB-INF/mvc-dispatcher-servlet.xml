@@ -9,6 +9,7 @@
 	<bean id="userController"
 		class="com.app.taxi.controller.UserController">
 		<property name="userService" ref="userService" />
+		<property name="orderService" ref="orderService" />
 	</bean>
 
 	<mvc:interceptors>

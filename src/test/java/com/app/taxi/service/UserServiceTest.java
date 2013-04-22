@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
+import org.springframework.util.Assert;
 
 import com.app.taxi.po.Guest;
 
@@ -25,8 +26,13 @@ public class UserServiceTest extends AbstractJUnit4SpringContextTests{
 		userService.registeredGuest(guest1);
 	}
 	
-	@Test
 	public void get(){
 		System.out.println(userService.getUser("2f187f2d6-c541-4943-9f27-97977364d8d0"));
+	}
+	
+	@Test
+	public void getGuest(){
+		Guest guest = userService.getGuest("18665887300");
+		Assert.isTrue(guest != null);
 	}
 }

@@ -16,10 +16,10 @@ public class OrderDaoImpl extends BaseDaoImpl implements OrderDao {
 
 	
 	public void saveOrder(Order order) {
-		String sql = "insert into taxi_order (id, start_address, end_address, guest_id, driver_id, lon, lan, state, create_time) " +
-				" values(?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into taxi_order (id, start_address, end_address, guest_id, lon, lan, state, create_time) " +
+				" values(?,?,?,?,?,?,?,?)";
 		super.getJdbcTemplate().update(sql, new Object[]{
-				getUUID(), order.getStartAddress(), order.getEndAddress(), order.getGuest().getId(), order.getDriver().getId(),
+				getUUID(), order.getStartAddress(), order.getEndAddress(), order.getGuest().getId(),
 				order.getCoordinate().getLon(), order.getCoordinate().getLan(), order.getState().toString(), super.getDateTime(0)
 		});
 		order.setId(getUUID());
@@ -77,7 +77,7 @@ public class OrderDaoImpl extends BaseDaoImpl implements OrderDao {
 		return r;
 	}
 
-	
+	@Override
 	public List<Order> queryOrdersByDriverId(String driverId) {
 		List<Order> r = new ArrayList<Order>();
 		String sql = "SELECT id, start_address, end_address, guest_id, driver_id, lon, lan, state, create_time " +
@@ -108,8 +108,12 @@ public class OrderDaoImpl extends BaseDaoImpl implements OrderDao {
 	
 	public List<Order> queryOrders(OrderState state, int min) {
 		List<Order> r = new ArrayList<Order>();
-		String sql = "SELECT id, start_address, end_address, guest_id, driver_id, lon, lan, state, create_time " +
-				"FROM taxi.taxi_order where create_time > ? and state = ?";
+		
+//		String sql = "SELECT  taxi.taxi_order.id, start_address, end_address, guest_id, driver_id, lon, lan, state, taxi.taxi_order.create_time, phone_num " +
+//				"FROM taxi.taxi_order ,  taxi_guest  g where guest_id = g.id and taxi.taxi_order.create_time > ? and state = ?";
+		
+		String sql = "SELECT o.id, start_address, end_address, guest_id, driver_id, lon, lan, state, o.create_time, g.phone_num " +
+				"FROM taxi.taxi_order o , taxi.taxi_guest g where o.create_time > ? and state = ? and guest_id = g.id";
 		List<Map<String, Object>> list = super.getJdbcTemplate().queryForList(sql, new Object[]{getDateTime(min), state.toString()});
 		for (Map<String, Object> map : list) {
 			Order o = new Order();
@@ -123,6 +127,7 @@ public class OrderDaoImpl extends BaseDaoImpl implements OrderDao {
 			o.setDriver(driver);
 			Guest guest = new Guest();
 			guest.setId((String)map.get("guest_id"));
+			guest.setPhone((String)map.get("phone_num"));
 			o.setGuest(guest);
 			o.setId((String)map.get("id"));
 			o.setStartAddress((String)map.get("start_address"));

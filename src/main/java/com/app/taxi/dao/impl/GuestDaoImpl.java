@@ -48,8 +48,26 @@ public class GuestDaoImpl extends BaseDaoImpl implements GuestDao {
 					guest.setCreateDate(rs.getTimestamp("create_time"));
 					return guest;
 				}
-				
 			}, id);
+		}catch (EmptyResultDataAccessException e) {
+		}
+		return null;
+	}
+
+	@Override
+	public Guest getGuestByPhone(String phoneNum) {
+		String sql = "select id, phone_num, create_time from taxi_guest where phone_num = ?";
+		try{
+			return super.getJdbcTemplate().queryForObject(sql, new RowMapper<Guest>(){
+				@Override
+				public Guest mapRow(ResultSet rs, int rowNum) throws SQLException {
+					Guest guest = new Guest();
+					guest.setId(rs.getString("id"));
+					guest.setPhone(rs.getString("phone_num"));
+					guest.setCreateDate(rs.getTimestamp("create_time"));
+					return guest;
+				}
+			}, phoneNum);
 		}catch (EmptyResultDataAccessException e) {
 		}
 		return null;

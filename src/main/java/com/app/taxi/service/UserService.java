@@ -12,4 +12,6 @@ public interface UserService {
 	
 	User getUser(String id);
 	
+	Guest getGuest(String phone);
+	
 }

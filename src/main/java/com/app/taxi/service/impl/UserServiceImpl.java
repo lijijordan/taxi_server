@@ -37,4 +37,10 @@ public class UserServiceImpl implements UserService{
 		return guestDao.getGuest(id);
 	}
 
+	@Override
+	public Guest getGuest(String phone) {
+		return guestDao.getGuestByPhone(phone);
+	}
+
+
 }
