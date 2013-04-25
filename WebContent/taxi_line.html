@@ -92,39 +92,7 @@ body {
 
       homeControlDiv.index = 1;
       map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);
-        
-      function renderMarker(radius, min, lat, lng){
-          console.log("radius : " + radius);
-      	$.ajax({
-    		  type: "POST",
-    		  url: "http://localhost:9080/taxi-server/user/queryOrder.do",
-    		  data: {radius: radius, min:min, lat: lat, lng: lng}
-    		}).done(function(msg) {
-    			var jsonData = JSON.parse(msg);
-    			for(var i=0; i<jsonData.length; i++){
-  					var obj = jsonData[i];
-  					console.log(obj.createTime);
-  					var latLng = new google.maps.LatLng(obj.lat, obj.lng);
-  					var m = new google.maps.Marker({
-  			              position:latLng,
-  			              map: map              
-  			          });
-  			          m.setIcon("./img/prayer.png");
-
-  			        markersArray.push(m);
-  			          
-  					google.maps.event.addListener(m, 'click', (function(m, i) {
-  				        return function() {
-  				          var obj = jsonData[i];
-  				          infowindow.setContent('phone:' + obj.phone +'time:'+ obj.createTime + 'start address:' 
-  						          + obj.startAddress +'end address:'+ obj.endAddress);
-  				          infowindow.open(map, m);
-  				        }
-  				      })(m, i));
-            	}
-    		});
-    		}
-          
+  
 
       
       // Try W3C Geolocation (Preferred)
@@ -140,27 +108,6 @@ body {
               map: map              
           });
           marker.setIcon("./img/taxi.png");
-          var infowindow = new google.maps.InfoWindow();
-          var populationOptions = {
-	       		   strokeColor: "#ff0000",  
-	       		   strokeOpacity: 0.8,  
-	       		   strokeWeight: 3,  
-	       		   fillColor: "#b0c4de",  
-       		       fillOpacity: 0.50,  
-                   map: map,
-                   center: myLatLng,
-                   radius: 10 * 1000,//10 km
-                   editable:true
-                };
-                var circle = new google.maps.Circle(populationOptions);
-                google.maps.event.addListener(circle, 'radius_changed', function()   
-                		{
-                			clearOverlays();
-                		    renderMarker((circle.getRadius() / 1000), 500, myLatLng.lat(), myLatLng.lng());
-                		});  
-				//render marker
-                renderMarker(10, 500, myLatLng.lat(), myLatLng.lng());
-				
         }, function() {
           handleNoGeolocation(browserSupportFlag);
         });

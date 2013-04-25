@@ -45,4 +45,10 @@ public class DaoTestHelper extends AbstractJUnit4SpringContextTests{
 		template.update(sql);
 	}
 	
+	@Test
+	public void clearTablePath(){
+		String sql = "delete from taxi_path where id <> ''";
+		template.update(sql);
+	}
+	
 }

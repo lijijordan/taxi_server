@@ -22,7 +22,7 @@ public class OrderServiceImpl implements OrderService {
 			double distance = DistanceAlgorithm.DistanceBetweenPlaces(coordinate.getLon(), coordinate.getLan(), 
 					order.getCoordinate().getLon(), order.getCoordinate().getLan ());
 			// computing distance 
-			order.setDistance(distance * 2);
+			order.setDistance(distance);
 			if(order.getDistance() < km){
 				r.add(order);
 			}

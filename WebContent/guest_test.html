@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrmKW1CDKE-l0DRXPHCXJ74FCBGnpw-hY&sensor=true">
+    </script>
+    <!-- jquery -->
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    
+    <script type="text/javascript">
+    var initialLocation;
+    var siberia = new google.maps.LatLng(60, 105);
+    var newyork = new google.maps.LatLng(40.69847032728747, -73.9514422416687);
+    var browserSupportFlag =  new Boolean();
+    var myLatLng;
+    var geocoder;
+
+               
+    function initialize() {
+    	geocoder = new google.maps.Geocoder();
+      var myOptions = {
+        zoom: 15,
+        scaleControl: true,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      var map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
+              
+      
+      // Try W3C Geolocation (Preferred)
+      if(navigator.geolocation) {
+        browserSupportFlag = true;
+        navigator.geolocation.getCurrentPosition(function(position) {
+          initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+          map.setCenter(initialLocation);
+          myLatLng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+          var marker = new google.maps.Marker({
+              position: myLatLng,
+              map: map              
+          });
+        }, function() {
+          handleNoGeolocation(browserSupportFlag);
+        });
+      }
+      // Browser doesn't support Geolocation
+      else {
+        browserSupportFlag = false;
+        handleNoGeolocation(browserSupportFlag);
+      }
+      
+      function handleNoGeolocation(errorFlag) {
+        if (errorFlag == true) {
+          alert("Geolocation service failed.");
+          initialLocation = newyork;
+        } else {
+          alert("Your browser doesn't support geolocation. We've placed you in Siberia.");
+          initialLocation = siberia;
+        }
+        map.setCenter(initialLocation);
+      }
+
+		// add click listener
+	    google.maps.event.addListener(map, 'click', function(event){
+	    	  console.log('Lat: ' + event.latLng.lat() + ' Lng: ' + event.latLng.lng());
+	    	  // find address name
+	    	  var latlng = new google.maps.LatLng(event.latLng.lat(), event.latLng.lng());
+  	  	      // request encode address
+		      geocoder.geocode({'latLng': latlng}, function(results, status) {
+		        if (status == google.maps.GeocoderStatus.OK) {
+		          if (results[1]) {
+		        	  console.log(results[1].formatted_address);
+
+		        	  $.ajax({
+		        		  type: "POST",
+		        		  url: "http://localhost:9080/taxi-server/user/calltaxi.do",
+		        		  data: {startAddress: results[1].formatted_address, endAddress: "some place", phone: "18665887300", lat: event.latLng.lat(), lng: event.latLng.lng()}
+		        		}).done(function( msg ) {
+		        		  alert( "Data Saved: " + msg );
+		        		});
+		        	  
+		          }
+		        } else {
+		          alert("Geocoder failed due to: " + status);
+		        }
+		      });
+	  	});
+      
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"/>
+    <div id="div"/>
+  </body>
+</html>

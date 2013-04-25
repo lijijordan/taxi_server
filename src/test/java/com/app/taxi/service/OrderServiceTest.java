@@ -51,5 +51,4 @@ public class OrderServiceTest extends AbstractJUnit4SpringContextTests{
 		orderService.updateOrderState(order);
 	}
 	
-	
 }

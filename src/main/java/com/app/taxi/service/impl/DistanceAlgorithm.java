@@ -19,7 +19,7 @@ public class DistanceAlgorithm {
 				+ Math.cos(Radians(lat1)) * Math.cos(Radians(lat2))
 				* (Math.sin(dlon / 2) * Math.sin(dlon / 2));
 		double angle = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-		return (angle * RADIO) * 0.62137;// distance in miles
+		return (angle * RADIO);// distance in km
 	}
 
 	public static void main(String[] args) {

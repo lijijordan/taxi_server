@@ -1,5 +1,7 @@
 package com.db.test;
 
+import java.sql.SQLException;
+
 import javax.sql.DataSource;
 
 import org.junit.Test;
@@ -15,7 +17,12 @@ public class TestConnection extends AbstractJUnit4SpringContextTests{
 	public void testConnection(){
 		System.out.println("test connection");
 		DataSource dataSource = (DataSource)this.applicationContext.getBean("dataSource");
-		Assert.notNull(dataSource);
+		try {
+			Assert.notNull(dataSource.getConnection());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

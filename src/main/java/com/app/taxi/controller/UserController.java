@@ -55,7 +55,7 @@ public class UserController{
 			order.setEndAddress(endAddress);
 			orderService.createOrder(order);
 			try {
-				response.getWriter().write("Send message successful! Please be patient");
+				response.getWriter().write("Send a message successful! Please be patient");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -63,9 +63,14 @@ public class UserController{
 		}
 	}
 	
+	@RequestMapping(value = "/addpath.do", method = RequestMethod.POST)
+	public void addPathPoint(HttpServletResponse response, double lat, double lng, String orderId){
+		
+	}
+	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/queryOrder.do", method = RequestMethod.POST)
-	public void queryOrder(HttpServletResponse response, long radius, double lat, double lng, int min){
+	public void queryOrder(HttpServletResponse response, double radius, double lat, double lng, int min){
 		Coordinate coordinate = new Coordinate(lat, lng); 
 		List<Order> list = orderService.queryOrder(OrderState.VALID, min, radius, coordinate);
 		JSONArray jsonArray = new JSONArray();
@@ -74,12 +79,16 @@ public class UserController{
 			object.put("lat", String.valueOf(order.getCoordinate().getLan()));
 			object.put("lng", String.valueOf(order.getCoordinate().getLon()));
 			object.put("phone", order.getGuest().getPhone());
+			object.put("startAddress", order.getStartAddress());
+			object.put("endAddress", order.getEndAddress());
 			object.put("createTime", String.valueOf(order.getCreateDate()));
 			jsonArray.add(object);
 		}
 		String msg = jsonArray.toJSONString();
 		log.info(msg);
 		try {
+			response.setHeader("ContentType", "text/json");  
+            response.setCharacterEncoding("utf-8");  
 			response.getWriter().write(msg);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
